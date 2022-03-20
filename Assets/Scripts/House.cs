@@ -12,7 +12,7 @@ public class House : MonoBehaviour
         {
             Debug.Log(other.gameObject.name);
             CourierController courier = other.gameObject.GetComponent<CourierController>();
-            if(courier.packageTransform && courier.package == houseType)
+            if(courier.packageTransform && courier.package == houseType && !courier.isAttacked)
             {
                 courier.GivePackage();
             }

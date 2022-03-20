@@ -36,4 +36,9 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public static void SpawnEarth(packageType type, Transform transform)
+    {
+
+    }
 }

@@ -138,6 +138,7 @@ MonoBehaviour:
     m_Bits: 1
   turnSmoothTime: 0.1
   isAttacked: 0
+  enemies: []
 --- !u!143 &2691252540299770253
 CharacterController:
   m_ObjectHideFlags: 0
@@ -180,7 +181,6 @@ GameObject:
   - component: {fileID: 2691252540613297340}
   - component: {fileID: 2691252540613297341}
   - component: {fileID: 2691252540613297342}
-  - component: {fileID: 2691252540613297343}
   m_Layer: 0
   m_Name: GFX
   m_TagString: Untagged
@@ -252,17 +252,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2691252540613297343
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2691252540613297336}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}

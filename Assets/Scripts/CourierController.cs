@@ -52,14 +52,18 @@ public class CourierController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "box")
+        if (other.gameObject.tag == "box" && !isAttacked)
         {
             Debug.Log(other.gameObject.name);
             Box box = other.gameObject.GetComponent<Box>();
-            Debug.Log(box.type);
-            package = box.type;
-            packageTransform = other.gameObject;
-            packageTransform.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            if(box.parent == null)
+            {
+                Debug.Log(box.type);
+                package = box.type;
+                packageTransform = other.gameObject;
+                packageTransform.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                box.parent = this.gameObject;
+            }
         }
     }
 
@@ -69,5 +73,15 @@ public class CourierController : MonoBehaviour
         Destroy(packageTransform);
         packageTransform = null;
         game.Deliver();
+    }
+
+    public void DropPackage()
+    {
+        packageTransform.transform.position = transform.position;
+        packageTransform.transform.localScale = new Vector3(1f, 1f, 1f);
+        Box box = packageTransform.GetComponent<Box>();
+        box.parent = null;
+        packageTransform = null;
+        package = packageType.NONE;
     }
 }

@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log(other.gameObject.name);
             isAttacked = true;
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
-            if (!enemies.Contains(enemy))
+            if (!enemies.Contains(enemy) && enemy.isActive)
             {
                 enemies.Add(enemy);
             }

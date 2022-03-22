@@ -38,7 +38,7 @@ public class CourierController : MonoBehaviour
 
             if(Physics.Raycast(ray, out hit, 100, movementMask))
             {
-                Debug.Log("We hit" + hit.collider.name + " ");
+                Debug.Log("We hit" + hit.collider.name + " " + hit.point);
                 motor.MoveToPoint(hit.point, true);
             }
         }

@@ -15,6 +15,7 @@ public enum Actions
 public class Enemy : MonoBehaviour
 {
     CourierMotor motor;
+    private EnemyMotor enemyMotor;
     Transform focus;
     public int lives = 3;
     public PlayerController player;
@@ -22,11 +23,15 @@ public class Enemy : MonoBehaviour
     public packageType package;
     public GameObject packageObject;
     public bool isActive = true;
+    // private bool hasPackage = false;
+    [SerializeField] private Transform dropHouse = null;
+    public bool availableToPickUp = true;
 
     // Start is called before the first frame update
     void Start()
     {
         motor = GetComponent<CourierMotor>();
+        enemyMotor = GetComponent<EnemyMotor>();
     }
 
     // Update is called once per frame
@@ -39,40 +44,57 @@ public class Enemy : MonoBehaviour
         if (packageObject)
         {
             packageObject.transform.position = transform.position + new Vector3(0f, 3f, 0f);
+            enemyMotor.moveToDropHouse(dropHouse);
         }
+
+        // if (hasPackage)
+        // {
+        //     motor.MoveToPoint(dropHouse.position);
+        // }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(isActive)
         {
-            if (other.gameObject.tag == "Player")
+            if (!packageObject)
             {
-                Tag(other);
-                player = other.gameObject.GetComponent<PlayerController>();
-
-            }
-
-            if (other.gameObject.tag == "courier")
-            {
-                Tag(other);
-                courier = other.gameObject.GetComponent<CourierController>();
-                courier.isAttacked = true;
-            }
-
-            if (other.gameObject.tag == "box")
-            {
-                Debug.Log(other.gameObject.name);
-                Box box = other.gameObject.GetComponent<Box>();
-                if (box.parent == null)
+                if (other.gameObject.tag == "Player")
                 {
-                    Debug.Log(box.type);
-                    package = box.type;
-                    packageObject = other.gameObject;
-                    packageObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                    box.parent = this.gameObject;
+                    Tag(other);
+                    player = other.gameObject.GetComponent<PlayerController>();
+
+                }
+
+                if (other.gameObject.tag == "courier")
+                {
+                    Tag(other);
+                    courier = other.gameObject.GetComponent<CourierController>();
+                    courier.isAttacked = true;
+                }
+
+                if (other.gameObject.tag == "box" && availableToPickUp)
+                {
+                    Debug.Log(other.gameObject.name);
+                    Box box = other.gameObject.GetComponent<Box>();
+                    if (box.parent == null)
+                    {
+                        Debug.Log(box.type);
+                        package = box.type;
+                        packageObject = other.gameObject;
+                        packageObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        box.parent = this.gameObject;
+                        // hasPackage = true;
+                        // TagHouse(dropHouse);
+                        UnTag();
+                        Debug.Log($"Zmierzam do punktu {dropHouse.position}");
+                    }
                 }
             }
+            // else
+            // {
+            //     if (other.gameObject.tag == "")
+            // }
         }
     }
 
@@ -84,12 +106,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
+    public void ResetDelay()
+    {
+        availableToPickUp = true;
+    }
 
     private void Tag(Collider other)
     {
         //Debug.Log(other.gameObject.name);
         focus = other.transform;
+    }
+    
+    private void TagHouse(Transform other)
+    {
+        //Debug.Log(other.gameObject.name);
+        focus = other;
     }
 
     private void UnTag()
@@ -105,6 +136,16 @@ public class Enemy : MonoBehaviour
         box.parent = null;
         packageObject = null;
         package = packageType.NONE;
+    }
+
+    public void DepositPackage(EnemyHouse house)
+    {
+        house.PutPackageOnStack(packageObject);
+        Box box = packageObject.GetComponent<Box>();
+        box.parent = null;
+        package = packageType.NONE;
+        Destroy(packageObject);
+        packageObject = null;
     }
 
     public void Fall()

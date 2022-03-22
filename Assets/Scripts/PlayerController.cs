@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
 
     public GameObject boat;
     public Vector3 distance;
+
+    [SerializeField] private Transform spawnPoint = null;
+    private bool spawn = false;
     // Update is called once per frame
     void Update()
     {
@@ -93,6 +96,14 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = boat.transform.position + distance;
         }
+
+        // if (spawn)
+        // {
+        //     // Physics.SyncTransforms();
+        //     transform.position = spawnPoint.position;
+        //     Debug.Log("TEEEEEEEST" + transform.position);
+        //     spawn = false;
+        // }
     }
 
     private void GroundedCheck()
@@ -121,6 +132,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Debug.Log("Colided with: " + other.gameObject.tag);
         if (other.gameObject.tag == "enemy")
         {
             Debug.Log(other.gameObject.name);
@@ -131,6 +143,13 @@ public class PlayerController : MonoBehaviour
                 enemies.Add(enemy);
             }
             
+        }
+        if (other.gameObject.tag == "water" && spawnPoint != null)
+        {
+            // Physics.SyncTransforms();
+            transform.position = spawnPoint.position;
+            Debug.Log("TEEEEEEEST" + transform.position);
+            // spawn = true;
         }
     }
 

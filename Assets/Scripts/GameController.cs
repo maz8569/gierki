@@ -9,6 +9,11 @@ public class GameController : MonoBehaviour
     public int packages = 1;
     public TextMeshProUGUI text;
     public Canvas win;
+
+    public GameObject blue_dirt;
+    public GameObject red_dirt;
+    public GameObject yellow_dirt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +42,20 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public static void SpawnEarth(packageType type, Transform transform)
+    public void SpawnEarth(packageType type, Transform transform)
     {
-
+        Vector3 pos = transform.position + new Vector3(0, 2, 0);
+        switch(type)
+        {
+            case packageType.BLUE:
+                Instantiate(blue_dirt, pos , Quaternion.identity);
+                break;
+            case packageType.RED:
+                Instantiate(red_dirt, pos, Quaternion.identity);
+                break;
+            case packageType.YELLOW:
+                Instantiate(yellow_dirt, pos, Quaternion.identity);
+                break;
+        }
     }
 }

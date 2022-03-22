@@ -166,6 +166,10 @@ MonoBehaviour:
   package: 0
   packageObject: {fileID: 0}
   isActive: 1
+  point: {x: 0, y: 0, z: 0}
+  patrolSPeed: 2
+  chaseSpeed: 5
+  gameController: {fileID: 0}
 --- !u!195 &1515687589290812455
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -200,6 +204,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 249ec8d8615a3cf459f31dae74f3bbc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  bridges:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!65 &1515687589290812453
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -13,7 +13,13 @@ public class Dig : Interactable
     void Start()
     {
         animator.SetInteger("state", amount);
-
+        if(!player)
+        {
+            GameObject yer = GameObject.Find("Player");
+            Debug.Log(yer);
+            player = yer.transform;
+            playerContr = yer.GetComponent<PlayerController>();
+        }
     }
 
     // Update is called once per frame

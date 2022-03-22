@@ -22,11 +22,20 @@ public class Enemy : MonoBehaviour
     public packageType package;
     public GameObject packageObject;
     public bool isActive = true;
+    public Vector3 point = new Vector3();
+    bool walkPointSet = false;
+    public int patrolSPeed = 2;
+    public int chaseSpeed = 5;
+    public GameController gameController;
 
     // Start is called before the first frame update
     void Start()
     {
         motor = GetComponent<CourierMotor>();
+        motor.agent.speed = patrolSPeed;
+        GameObject mainCamera = GameObject.Find("Main Camera");
+        gameController = mainCamera.GetComponent<GameController>();
+        Debug.Log(gameController);
     }
 
     // Update is called once per frame
@@ -34,12 +43,38 @@ public class Enemy : MonoBehaviour
     {
         if (focus && isActive)
         {
+            
             motor.MoveToPoint(focus.position);
+        }
+        if(!focus && isActive)
+        {
+            Patroling();
         }
         if (packageObject)
         {
             packageObject.transform.position = transform.position + new Vector3(0f, 3f, 0f);
+
+            RunAway();
         }
+    }
+
+    public void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if(walkPointSet)
+            motor.MoveToPoint(point);
+
+        Vector3 distanceToWalkPoint = transform.position - point;
+
+        if (distanceToWalkPoint.magnitude < 0.2f)
+            walkPointSet = false;
+    }
+
+    public void SearchWalkPoint()
+    {
+        motor.RandomPoint(transform.position, 5f, out point);
+        walkPointSet = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -84,17 +119,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-
     private void Tag(Collider other)
     {
         //Debug.Log(other.gameObject.name);
         focus = other.transform;
+        motor.agent.speed = chaseSpeed;
     }
 
     private void UnTag()
     {
         focus = null;
+        motor.agent.speed = patrolSPeed;
     }
 
     public void DropPackage()
@@ -148,11 +183,27 @@ public class Enemy : MonoBehaviour
 
     public void RunAway()
     {
+        bool hide = false;
+        for(int i = 0; i < 30; i++)
+        {
+            float range = Random.Range(20, 80);
+            hide = motor.RandomPoint(transform.position, range, out point);
+            if (hide) break;
+        }
 
+        if(hide && package != packageType.NONE)
+        {
+            motor.MoveToPoint(point);
+
+            Invoke("DigUp", 3f);
+        }
     }
 
     public void DigUp()
     {
-        GameController.SpawnEarth(package, transform);
+        gameController.SpawnEarth(package, transform);
+
+        package = packageType.NONE;
+        Destroy(packageObject);
     }
 }

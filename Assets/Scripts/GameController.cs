@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public GameObject blue_dirt;
     public GameObject red_dirt;
     public GameObject yellow_dirt;
+    public int sceneNumber = 0; 
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,11 @@ public class GameController : MonoBehaviour
     void Update()
     {
         text.SetText($"Packages left: " + packages);
+
+        if(Input.GetButtonDown("Cancel"))
+        {
+            SceneManager.LoadScene(3);
+        }
     }
 
     public void Deliver()
@@ -39,12 +45,12 @@ public class GameController : MonoBehaviour
 
     public void Reload()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(sceneNumber);
     }
 
     public void SpawnEarth(packageType type, Transform transform)
     {
-        Vector3 pos = transform.position + new Vector3(0, 2, 0);
+        Vector3 pos = transform.position + new Vector3(0, 1f, 0);
         switch(type)
         {
             case packageType.BLUE:

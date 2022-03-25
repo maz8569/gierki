@@ -20,12 +20,14 @@ public class CourierController : MonoBehaviour
     public GameObject packageTransform;
     public GameController game;
     public bool isAttacked;
+    LineRenderer lineRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         cam = Camera.main;
         motor = GetComponent<CourierMotor>();
+        //lineRenderer = 
     }
 
     // Update is called once per frame
@@ -38,8 +40,8 @@ public class CourierController : MonoBehaviour
 
             if(Physics.Raycast(ray, out hit, 100, movementMask))
             {
-                Debug.Log("We hit" + hit.collider.name + " ");
-                motor.MoveToPoint(hit.point, true);
+                Debug.Log("We hit" + hit.collider.name + " " + hit.point);
+                motor.MoveToPoint(hit.point);
             }
         }
 

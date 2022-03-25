@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1515687588902363394}
   - component: {fileID: 1515687588902363395}
   - component: {fileID: 5201498563565974065}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,8 @@ GameObject:
   - component: {fileID: 1515687589290812453}
   - component: {fileID: 8106851798598477947}
   - component: {fileID: 1401979360406079558}
-  m_Layer: 0
+  - component: {fileID: 4312368089946758227}
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -170,6 +171,8 @@ MonoBehaviour:
   patrolSPeed: 2
   chaseSpeed: 5
   gameController: {fileID: 0}
+  dropHouse: {fileID: 0}
+  availableToPickUp: 1
 --- !u!195 &1515687589290812455
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -250,6 +253,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &4312368089946758227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515687589290812450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d71f83dfc054f9b91314deddadb1771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8502617367060243686
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,7 +276,7 @@ GameObject:
   - component: {fileID: 4965566903343706882}
   - component: {fileID: 1865145912623497954}
   - component: {fileID: 3368633385895101082}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

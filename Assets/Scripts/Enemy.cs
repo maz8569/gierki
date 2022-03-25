@@ -15,6 +15,7 @@ public enum Actions
 public class Enemy : MonoBehaviour
 {
     CourierMotor motor;
+    private EnemyMotor enemyMotor;
     Transform focus;
     public int lives = 3;
     public PlayerController player;
@@ -27,6 +28,9 @@ public class Enemy : MonoBehaviour
     public int patrolSPeed = 2;
     public int chaseSpeed = 5;
     public GameController gameController;
+    // private bool hasPackage = false;
+    [SerializeField] private Transform dropHouse = null;
+    public bool availableToPickUp = true;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +40,7 @@ public class Enemy : MonoBehaviour
         GameObject mainCamera = GameObject.Find("Main Camera");
         gameController = mainCamera.GetComponent<GameController>();
         Debug.Log(gameController);
+        enemyMotor = GetComponent<EnemyMotor>();
     }
 
     // Update is called once per frame
@@ -43,10 +48,10 @@ public class Enemy : MonoBehaviour
     {
         if (focus && isActive)
         {
-            
+
             motor.MoveToPoint(focus.position);
         }
-        if(!focus && isActive)
+        if (!focus && isActive)
         {
             Patroling();
         }
@@ -54,7 +59,16 @@ public class Enemy : MonoBehaviour
         {
             packageObject.transform.position = transform.position + new Vector3(0f, 3f, 0f);
 
-            RunAway();
+            int benave = Random.Range(1, 10);
+            if(benave < 3)
+            {
+                RunAway();
+            }
+            else
+            {
+                motor.MoveToPoint(dropHouse.position);
+
+            }
         }
     }
 
@@ -69,7 +83,13 @@ public class Enemy : MonoBehaviour
 
         if (distanceToWalkPoint.magnitude < 0.2f)
             walkPointSet = false;
-    }
+            //enemyMotor.moveToDropHouse(dropHouse);
+        }
+
+        // if (hasPackage)
+        // {
+        //     motor.MoveToPoint(dropHouse.position);
+        // }
 
     public void SearchWalkPoint()
     {
@@ -81,42 +101,58 @@ public class Enemy : MonoBehaviour
     {
         if(isActive)
         {
-            if (other.gameObject.tag == "Player")
+            if (!packageObject)
             {
-                Tag(other);
-                player = other.gameObject.GetComponent<PlayerController>();
-
-            }
-
-            if (other.gameObject.tag == "courier")
-            {
-                Tag(other);
-                courier = other.gameObject.GetComponent<CourierController>();
-                courier.isAttacked = true;
-            }
-
-            if (other.gameObject.tag == "box")
-            {
-                Debug.Log(other.gameObject.name);
-                Box box = other.gameObject.GetComponent<Box>();
-                if (box.parent == null)
+                if (other.gameObject.tag == "Player")
                 {
-                    Debug.Log(box.type);
-                    package = box.type;
-                    packageObject = other.gameObject;
-                    packageObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                    box.parent = this.gameObject;
+                    Tag(other);
+                    player = other.gameObject.GetComponent<PlayerController>();
+
+                }
+
+                if (other.gameObject.tag == "courier")
+                {
+                    Tag(other);
+                    courier = other.gameObject.GetComponent<CourierController>();
+                    courier.isAttacked = true;
+                }
+
+                if (other.gameObject.tag == "box" && availableToPickUp)
+                {
+                    Debug.Log(other.gameObject.name);
+                    Box box = other.gameObject.GetComponent<Box>();
+                    if (box.parent == null)
+                    {
+                        Debug.Log(box.type);
+                        package = box.type;
+                        packageObject = other.gameObject;
+                        packageObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                        box.parent = this.gameObject;
+                        // hasPackage = true;
+                        // TagHouse(dropHouse);
+                        UnTag();
+                        Debug.Log($"Zmierzam do punktu {dropHouse.position}");
+                    }
                 }
             }
+            // else
+            // {
+            //     if (other.gameObject.tag == "")
+            // }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "courier")
+        if (other.gameObject.tag == "courier" && isActive)
         {
             courier.isAttacked = false;
         }
+    }
+
+    public void ResetDelay()
+    {
+        availableToPickUp = true;
     }
 
     private void Tag(Collider other)
@@ -124,6 +160,12 @@ public class Enemy : MonoBehaviour
         //Debug.Log(other.gameObject.name);
         focus = other.transform;
         motor.agent.speed = chaseSpeed;
+    }
+    
+    private void TagHouse(Transform other)
+    {
+        //Debug.Log(other.gameObject.name);
+        focus = other;
     }
 
     private void UnTag()
@@ -140,6 +182,16 @@ public class Enemy : MonoBehaviour
         box.parent = null;
         packageObject = null;
         package = packageType.NONE;
+    }
+
+    public void DepositPackage(EnemyHouse house)
+    {
+        house.PutPackageOnStack(packageObject);
+        Box box = packageObject.GetComponent<Box>();
+        box.parent = null;
+        package = packageType.NONE;
+        Destroy(packageObject);
+        packageObject = null;
     }
 
     public void Fall()

@@ -32,7 +32,7 @@ public class EnemyHouse : MonoBehaviour
                 // enemy.DepositPackage(this);
                 Debug.LogWarning($"Paczka {enemy.packageObject}, {enemy.package} zostala oddana");
                 enemy.DropPackage();
-                //enemy.availableToPickUp = false;
+                enemy.availableToPickUp = false;
                 Invoke("ResetDelay", 2f);
                 enemyMotor.moveToStartPosition();
             }
@@ -42,7 +42,7 @@ public class EnemyHouse : MonoBehaviour
 
     private void ResetDelay()
     {
-       // enemy.ResetDelay();
+        enemy.ResetDelay();
     }
 
     public void PutPackageOnStack(GameObject package)

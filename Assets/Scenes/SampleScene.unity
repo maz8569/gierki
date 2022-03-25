@@ -1671,7 +1671,7 @@ MonoBehaviour:
   blue_dirt: {fileID: 0}
   red_dirt: {fileID: 0}
   yellow_dirt: {fileID: 0}
-  sceneNumber: 1
+  sceneNumber: 2
 --- !u!1 &992124720
 GameObject:
   m_ObjectHideFlags: 0

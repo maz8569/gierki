@@ -27,6 +27,6 @@ public class MenuController : MonoBehaviour
 
     public void Begin()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }

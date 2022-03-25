@@ -2576,7 +2576,7 @@ MonoBehaviour:
   blue_dirt: {fileID: 4438398221722377650, guid: e2b4e65e2b7143b45a536aa061383fd4, type: 3}
   red_dirt: {fileID: 5943282972131617255, guid: 5eec99280083fe242b5e91426ab3d549, type: 3}
   yellow_dirt: {fileID: 8467498613254476825, guid: 4b01fe68002f0f8468e66c7db7b2f554, type: 3}
-  sceneNumber: 3
+  sceneNumber: 0
 --- !u!1 &992124720
 GameObject:
   m_ObjectHideFlags: 0

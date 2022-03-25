@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
 
         if(Input.GetButtonDown("Cancel"))
         {
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(0);
         }
     }
 
